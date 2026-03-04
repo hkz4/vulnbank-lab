@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    network_security_config.xml
+    VULNERABILITY: Allows cleartext HTTP traffic to any domain
+    No certificate pinning
+    Trusts user-installed certificates (allows MITM with Burp Suite)
+-->
+<network-security-config>
+    <!-- VULNERABILITY: Allow cleartext traffic for all domains -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- VULNERABILITY: Trust user-installed CAs (allows Burp Suite interception) -->
+            <certificates src="user" />
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- VULNERABILITY: Explicitly allow cleartext to backend server -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">192.168.1.0</domain>
+    </domain-config>
+</network-security-config>

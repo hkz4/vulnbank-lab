@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VulnBank</string>
+
+    <!-- VULNERABILITY: Hardcoded API key in strings.xml - found via APK decompilation -->
+    <string name="api_key">sk_live_4eC39HqLyjWDarjtT1zdp7dc</string>
+
+    <!-- VULNERABILITY: Backend URL hardcoded -->
+    <string name="base_url">http://10.0.2.2:5000</string>
+
+    <!-- VULNERABILITY: Hardcoded credentials for "demo" -->
+    <string name="demo_username">user1</string>
+    <string name="demo_password">password1</string>
+
+    <!-- VULNERABILITY: Hardcoded encryption passphrase -->
+    <string name="encryption_passphrase">MyS3cr3tK3y@2024</string>
+
+    <!-- VULNERABILITY: Analytics/tracking key -->
+    <string name="analytics_key">AIzaSyD4eC39HqLyjWDarjtT1zdp7dcXXXXXXXX</string>
+
+    <!-- App strings -->
+    <string name="login_hint_username">Enter username</string>
+    <string name="login_hint_password">Enter password</string>
+    <string name="login_button">Login</string>
+    <string name="logout_button">Logout</string>
+    <string name="transfer_button">Transfer Money</string>
+    <string name="history_button">Transaction History</string>
+</resources>

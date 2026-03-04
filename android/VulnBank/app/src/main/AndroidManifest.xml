@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    VulnBank AndroidManifest.xml
+    WARNING: Contains INTENTIONAL security vulnerabilities for educational/pentest practice.
+    VULNERABILITY LIST:
+    - android:debuggable="true" - allows ADB debugging and hooking
+    - android:allowBackup="true" - allows data extraction via ADB backup
+    - Exported activities without permissions - can be launched by any app/ADB
+    - Exported content provider - exposes sensitive data
+    - Exported broadcast receiver - can receive broadcasts from any app
+    - Cleartext traffic allowed via network_security_config
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.vulnbank.app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".VulnBankApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.VulnBank"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:debuggable="true"
+        tools:ignore="HardcodedDebugMode">
+
+        <!-- VULNERABILITY: Main activity exported without permission -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- VULNERABILITY: LoginActivity exported without permission - can be launched by any app -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+
+        <!-- VULNERABILITY: DashboardActivity exported without permission - auth bypass -->
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="true" />
+
+        <!-- VULNERABILITY: TransferActivity exported without permission -->
+        <activity
+            android:name=".TransferActivity"
+            android:exported="true" />
+
+        <!-- VULNERABILITY: TransactionHistoryActivity exported without permission -->
+        <activity
+            android:name=".TransactionHistoryActivity"
+            android:exported="true" />
+
+        <!-- VULNERABILITY: WebViewActivity exported - can load arbitrary URLs -->
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="vulnbank" />
+            </intent-filter>
+        </activity>
+
+        <!-- VULNERABILITY: PinActivity exported - can be invoked to bypass PIN screen -->
+        <activity
+            android:name=".PinActivity"
+            android:exported="true" />
+
+        <!-- VULNERABILITY: Content Provider exported without permissions - leaks user data -->
+        <provider
+            android:name=".providers.UserContentProvider"
+            android:authorities="com.vulnbank.app.provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <!-- VULNERABILITY: BroadcastReceiver exported without permissions -->
+        <receiver
+            android:name=".receivers.TransactionReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.vulnbank.TRANSACTION_COMPLETE" />
+                <action android:name="com.vulnbank.SEND_MONEY" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
